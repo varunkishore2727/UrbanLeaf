@@ -1,0 +1,77 @@
+/* ===============================
+   HERO CINEMATIC ANIMATION
+================================= */
+
+@keyframes heroZoom {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.08) translateY(-10px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+.hero-image-animate {
+  animation: heroZoom 18s ease-in-out infinite;
+}
+
+
+
+/* ===============================
+   AI PRODUCT HIGHLIGHT EFFECT
+   Premium Glow + Ring Animation
+================================= */
+
+.ai-highlight {
+  position: relative;
+  z-index: 20;
+  border-radius: 24px;
+  animation: aiGlowPulse 1.4s ease-in-out infinite alternate;
+  transition: all 0.3s ease;
+}
+
+/* Main glow */
+@keyframes aiGlowPulse {
+  from {
+    box-shadow:
+      0 0 0 4px #10b981,
+      0 0 20px rgba(16, 185, 129, 0.5),
+      0 0 40px rgba(16, 185, 129, 0.3);
+  }
+  to {
+    box-shadow:
+      0 0 0 6px #34d399,
+      0 0 35px rgba(16, 185, 129, 0.8),
+      0 0 60px rgba(16, 185, 129, 0.4);
+  }
+}
+
+/* Outer animated ring */
+.ai-highlight::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border-radius: 28px;
+  border: 2px solid rgba(16, 185, 129, 0.9);
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.7);
+  pointer-events: none;
+  animation: aiRingPulse 2s ease-in-out infinite;
+}
+
+@keyframes aiRingPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
