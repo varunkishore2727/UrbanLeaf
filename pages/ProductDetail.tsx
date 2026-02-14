@@ -67,7 +67,7 @@ export const ProductDetail = () => {
           {/* Info Grid */}
           <div className="grid grid-cols-2 gap-6 mb-8">
             <div className="bg-slate-50 p-5 rounded-2xl shadow-sm">
-              <h4 className="font-semibold mb-1">🌱 Growing Time</h4>
+              <h4 className="font-semibold mb-1"> Growing Time</h4>
               <p className="text-slate-600">{product.growingTime}</p>
             </div>
 
@@ -89,7 +89,7 @@ export const ProductDetail = () => {
 
           {/* Health Benefits */}
           <div className="mb-10">
-            <h4 className="font-semibold mb-2">❤️ Health Benefits</h4>
+            <h4 className="font-semibold mb-2"> Health Benefits</h4>
             <p className="text-slate-600 leading-relaxed">
               {product.details?.healthBenefits}
             </p>

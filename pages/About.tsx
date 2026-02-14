@@ -16,7 +16,7 @@ export const About = () => {
             transition={{ duration: 0.8 }}
             className="text-4xl md:text-5xl font-bold mb-6"
           >
-            Our Story 🌿
+            Our Story 
           </motion.h1>
 
           <motion.p
@@ -54,7 +54,7 @@ export const About = () => {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold mb-6">From a Small Experiment 🌱</h2>
+            <h2 className="text-3xl font-bold mb-6">From a Small Experiment </h2>
             <p className="text-slate-600 mb-6 leading-relaxed">
               What started as a small vertical farming experiment in a compact
               urban space quickly grew into something bigger. We saw how
@@ -81,7 +81,7 @@ export const About = () => {
             viewport={{ once: true }}
             className="text-3xl font-bold mb-12"
           >
-            Why We Do This 💚
+            Why We Do This 
           </motion.h2>
 
           <div className="grid md:grid-cols-3 gap-10">
@@ -127,7 +127,7 @@ export const About = () => {
           viewport={{ once: true }}
           className="text-3xl md:text-4xl font-bold mb-6"
         >
-          Growing a Healthier Future 🌍
+          Growing a Healthier Future 
         </motion.h2>
 
         <motion.p

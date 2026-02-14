@@ -6,8 +6,8 @@ const Products = () => {
   const [visibleCount, setVisibleCount] = useState(0);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/products")
-      .then((res) => res.json())
+    fetch(`${import.meta.env.VITE_API_URL}/api/products`)
+    .then((res) => res.json())
       .then((data) => {
         setProducts(data);
         setVisibleCount(0);
@@ -26,7 +26,7 @@ const Products = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-16">
       <h1 className="text-4xl font-semibold text-center mb-16 tracking-tight">
-        Our Harvest 🌱
+        Our Harvest 
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
