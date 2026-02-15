@@ -1,7 +1,6 @@
 require("dotenv").config({ path: "./.env" });
 const express = require("express");
 const cors = require("cors");
-const fetch = require("node-fetch"); // 👈 ADD THIS
 const connectDB = require("./config/db");
 
 const app = express();
@@ -13,7 +12,7 @@ app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/products", require("./routes/productRoutes"));
 
 /* ================================
-   🔥 GEMINI CHAT ROUTE
+   GEMINI CHAT ROUTE (SAFE VERSION)
 ================================ */
 
 app.post("/api/chat", async (req, res) => {
@@ -27,7 +26,8 @@ app.post("/api/chat", async (req, res) => {
       });
     }
 
-    const lastUserMessage = messages[messages.length - 1].content;
+    const lastUserMessage =
+      messages[messages.length - 1]?.content || "";
 
     const prompt = `
 You are an AI co-browsing assistant for the UrbanLeaf website.
@@ -35,7 +35,7 @@ You are an AI co-browsing assistant for the UrbanLeaf website.
 User message:
 ${lastUserMessage}
 
-Respond ONLY in JSON format.
+Respond ONLY in valid JSON.
 
 Normal reply:
 {
@@ -66,7 +66,9 @@ Highlight:
       `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           contents: [
             {
@@ -77,24 +79,40 @@ Highlight:
       }
     );
 
+    if (!geminiResponse.ok) {
+      const errorText = await geminiResponse.text();
+      console.error("Gemini API Error:", errorText);
+      return res.status(500).json({
+        type: "text",
+        content: "AI service error.",
+      });
+    }
+
     const data = await geminiResponse.json();
 
     const rawText =
-      data.candidates?.[0]?.content?.parts?.[0]?.text;
+      data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!rawText) {
+      return res.json({
+        type: "text",
+        content: "No response generated.",
+      });
+    }
 
     let parsed;
 
     try {
-      parsed = JSON.parse(rawText);
+      parsed = JSON.parse(rawText.trim());
     } catch {
       parsed = { type: "text", content: rawText };
     }
 
-    res.json(parsed);
+    return res.json(parsed);
 
   } catch (error) {
     console.error("Gemini Backend Error:", error);
-    res.status(500).json({
+    return res.status(500).json({
       type: "text",
       content: "Server error occurred.",
     });
@@ -105,7 +123,6 @@ Highlight:
    BASIC ROUTES
 ================================ */
 
-// Health check
 app.get("/", (req, res) => {
   res.send("Backend is running");
 });
@@ -113,10 +130,15 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 8000;
 
 const startServer = async () => {
-  await connectDB();
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error("Database connection failed:", err);
+    process.exit(1);
+  }
 };
 
 startServer();
